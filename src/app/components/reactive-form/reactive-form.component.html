@@ -1,0 +1,36 @@
+<h2 class="form-title">Reactive form</h2>
+<form class="form" *ngIf="reactiveForm" [formGroup]="reactiveForm">
+  <label for="phone">First name:</label>
+  <span class="error" *ngIf="reactiveForm.controls['firstName'].hasError('required') && reactiveForm.controls['firstName'].touched"> *Required</span>
+  <input type="text" class="form-control" formControlName="firstName" placeholder="Enter First name">
+  <label for="phone">Last name:</label>
+  <input type="text" class="form-control" formControlName="lastName" placeholder="Enter Last name">
+  <label for="phone">Email:</label>
+  <span class="error" *ngIf="reactiveForm.controls['email'].hasError('email') && reactiveForm.controls['email'].touched"> *Invalid email</span>
+  <span class="error" *ngIf="reactiveForm.controls['email'].hasError('required') && reactiveForm.controls['email'].touched"> *Required</span>
+  <input type="email" class="form-control" formControlName="email" placeholder="Enter Email">
+  <label for="phone">Age:</label>
+  <span class="error" *ngIf="reactiveForm.controls['age'].hasError('min') && reactiveForm.controls['age'].touched"> *Age mast be more then 15</span>
+  <span class="error" *ngIf="reactiveForm.controls['age'].hasError('max') && reactiveForm.controls['age'].touched"> *Age mast be less then 65</span>
+  <input type="text" class="form-control" formControlName="age" placeholder="Enter Age">
+  <label for="phone">Phone:</label>
+  <input type="text" class="form-control" formControlName="phone" placeholder="Enter Phone">
+  <label for="phone">Country:</label>
+  <select class="form-control" formControlName="country">
+    <ng-container *ngFor="let country of countries">
+      <option value="country" *ngIf="country === person.country" selected>{{ country }}</option>
+      <option value="country" *ngIf="country !== person.country">{{ country }}</option>
+    </ng-container>
+  </select>
+  <label for="skills">Skills:</label>
+  <ng-container formArrayName="skills">
+    <div *ngFor="let _ of skills.controls; index as i">
+      <ng-container [formGroupName]="i">
+        <input class="skill-input" type="text" placeholder="skill name" formControlName="name" />
+        <span class="action" (click)="removeSkill(i)"> remove</span>
+      </ng-container>
+    </div>
+    <button type="button" class="btn btn-secondary btn-add ml-0" (click)="addSkill()">Add new Skills</button>
+  </ng-container>
+  <button type="button" class="btn btn-primary btn-submit mt-4 w-25" [disabled]="reactiveForm.invalid">Submit</button>
+</form>
